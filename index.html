@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Booking</title>
+    <style>
+        /* Navbar */
+        .navbar {
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+            display: block;
+            padding: 10px 15px;
+        }
+
+        .nav-links a:hover {
+            color: #ddd;
+        }
+
+        /* Dropdown Menu */
+        .dropdown-menu {
+            list-style: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            display: none;
+            background-color: #444;
+            padding: 10px 0;
+            margin: 0;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+
+        .dropdown-menu li {
+            width: 150px;
+        }
+
+        .dropdown-menu a {
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #555;
+        }
+
+        /* Show Dropdown on Hover */
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* CSS for Form */
+        form {
+            z-index: 2; /* Ensures the form is above the overlay */
+            background-color: #fff; /* Solid white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        form h2 {
+            color: #333; 
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .date-container {
+            position: relative;
+        }
+
+        .date-container input[type="date"]::before {
+            content: attr(placeholder); /* Use the placeholder attribute value */
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #aaa;
+        }
+
+        .date-container input[type="date"]:focus::before,
+        .date-container input[type="date"]:valid::before {
+            content: '';
+        }
+
+        .date-container input[type="date"] {
+            position: relative;
+            z-index: 1;
+            background: transparent;
+            color: black;
+        }
+
+        /* CSS for Home Section */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        #Home {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+            background: url('assets/Home.png') no-repeat center center/cover;
+            padding: 50px;
+            color: white;
+            position: relative;
+        }
+
+        #Home::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Adds a dark overlay for better readability */
+            z-index: 1;
+        }
+
+        .content {
+            z-index: 2; /* Ensures content is above the overlay */
+            max-width: 50%;
+        }
+
+        .content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .content p {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            color: white;
+        }
+
+        /* Responsive Form */
+        @media (max-width: 768px) {
+            form {
+                padding: 20px;
+            }
+
+            input, button {
+                padding: 10px;
+            }
+
+            .content {
+                max-width: 100%;
+                text-align: center;
+            }
+
+            #Home {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .content h1 {
+                font-size: 1.5rem;
+                text-align: center;
+            }
+
+            .content p {
+                font-size: 1rem;
+                text-align: center;
+            }
+        }
+
+        
+
+     /* Styling for Practice Areas section */
+#PracticeAreas {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #f9f9f9;  /* Light background */
+}
+
+#PracticeAreas h1 {
+    font-size: 2rem;
+    color: #333;  /* Dark text */
+    margin-bottom: 30px;
+}
+
+/* Style for the container holding the cards */
+.Area-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* 3 cards per row */
+    gap: 20px;
+    justify-items: center;
+    max-width: 1200px;
+    margin: 0 auto;  /* Center the grid */
+}
+
+/* Style for each individual card */
+.practicearea.card {
+    background-color: white;  /* White background */
+    color: black;  /* Black text */
+    border: 1px solid #ddd;  /* Light border */
+    border-radius: 10px;  /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: center;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Hover effect for card */
+.practicearea.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the image inside the card */
+.card-logo {
+    width: auto;
+    max-width: 100px;  /* Adjust the maximum width as needed */
+    height: auto;
+    margin: 20px auto;  /* Centers the image horizontally */
+    display: block;  /* Make the image a block element for centering */
+    border-radius: 50%;  /* Make the image round */
+}
+
+
+/* Style for the card details */
+.Area-details {
+    padding: 15px;
+}
+
+/* Title styling */
+.Area-details h3 {
+    font-size: 1.2rem;
+    color: black;
+    margin-bottom: 10px;
+}
+
+/* Description styling */
+.Area-details p {
+    font-size: 1rem;
+    color: #555;  /* Slightly grey text for description */
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    #PracticeAreas h1 {
+        font-size: 1.5rem;
+    }
+
+    .Area-container {
+        grid-template-columns: repeat(2, 1fr);  /* 2 cards per row on smaller screens */
+    }
+
+    .practicearea.card {
+        padding: 10px;
+    }
+}
+
+     /* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-section {
+    width: 22%;
+    margin-bottom: 20px;
+}
+
+.footer-section h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    color: #f2f2f2;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-section ul li {
+    margin: 10px 0;
+}
+
+.footer-section ul li a {
+    color: #ddd;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: #ff6347;
+}
+
+.footer-bottom {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: #bbb;
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-section {
+        width: 100%;
+        text-align: center;
+    }
+
+    .footer-bottom {
+        margin-top: 20px;
+    }
+}
+   
+.social-icons a {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin: 0 5px;
+            background-size: cover;
+        }
+
+.facebook-icon {
+    background-image: url('assets/facebook-icon.png');
+}
+
+.twitter-icon {
+    background-image: url('assets/twitter-icon.png');
+}
+
+.instagram-icon {
+    background-image: url('assets/instagram-icon.png');
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <a class="brand" href="#">
+                <img src="assets/logo.png" alt="Logo" class="navbar-logo">
+                My Website</a>
+            <ul class="nav-links">
+                <li><a href="#Home">Home</a></li>
+                <li><a href="#AboutUs">About</a></li>
+                <li><a href="#Contact">Contact</a></li>
+                <li class="dropdown">
+                    <a href="#">Page</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#Home">Home</a></li>
+                        <li><a href="./login.html">Login</a></li>
+                        <li><a href="./signup.html">Sign Up</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="Home">
+        <div class="content">
+            <h1>Notary Public & Legal Solutions</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis cupiditate deserunt placeat necessitatibus a aliquam corrupti nisi odio aliquid, accusamus.</p>
+        </div>
+
+        <form>
+            <h2>Book an Appointment</h2>
+            <input type="text" name="Name" placeholder="Name" required><br><br>
+            <input type="email" name="Email" placeholder="Email" required><br><br>
+            <div class="date-container">
+                <input type="date" name="AppointmentDate" required>
+            </div><br><br>
+            <button type="submit">Book Appointment</button>
+        </form>
+    </div>
+
+    <div id="PracticeAreas"> 
+        <h1>Practice Areas</h1>
+        <div class="Area-container">
+            <!-- card 1 -->
+            <div class="practicearea card">
+                <img src="assets/logo1.png" alt="Logo" class="card-logo">
+                <div class="Area-details">
+                    <h3>Bankruptcy Law</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis cupiditate deserunt</p>
+                </div>
+            </div>
+            
+            <!-- card 2 -->
+            <div class="practicearea card">
+                <img src="assets/logo2.png" alt="Logo" class="card-logo">
+                <div class="Area-details">
+                    <h3>Family Law</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis cupiditate deserunt</p>
+                </div>
+            </div>
+            
+            <!-- card 3 -->
+            <div class="practicearea card">
+                <img src="assets/logo3.png" alt="Logo" class="card-logo">
+                <div class="Area-details">
+                    <h3>Criminal Defense</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis cupiditate deserunt</p>
+                </div>
+            </div>
+            
+            <!-- card 4 -->
+            <div class="practicearea card">
+                <img src="assets/logo4.png" alt="Logo" class="card-logo">
+                <div class="Area-details">
+                    <h3>Corporate Law</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis cupiditate deserunt</p>
+                </div>
+            </div>
+
+             <!-- card 5 -->
+             <div class="practicearea card">
+                <img src="assets/logo5.png" alt="Logo" class="card-logo">
+                <div class="Area-details">
+                    <h3>Business Law</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis cupiditate deserunt</p>
+                </div>
+            </div>
+
+             <!-- card 4 -->
+             <div class="practicearea card">
+                <img src="assets/logo6.png" alt="Logo" class="card-logo">
+                <div class="Area-details">
+                    <h3>Immigration Law</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veritatis cupiditate deserunt</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+      <!-- location -->
+  <div class="map">
+
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3533.020970918079!2d85.2806539!3d27.6931052!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb187a97f390b1%3A0xec3f47092df0d4ca!2sKalanki%2C%20Kathmandu!5e0!3m2!1sen!2snp!4v1700397361258!5m2!1sen!2snp" 
+      width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" 
+      referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>  
+    
+
+    <!-- Footer -->
+<footer>
+    <div class="footer-container">
+        <div class="footer-section">
+            <h3>About</h3>
+            <ul>
+                <li><a href="#AboutUs">About Us</a></li>
+                <li><a href="#Contact">Contact</a></li>
+                <li><a href="#FAQ">FAQ</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="#Home">Home</a></li>
+                <li><a href="#PracticeAreas">Practice Areas</a></li>
+                <li><a href="#Services">Services</a></li>
+                <li><a href="#Blog">Blog</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#PrivacyPolicy">Privacy Policy</a></li>
+                <li><a href="#TermsOfService">Terms of Service</a></li>
+                <li><a href="#LegalDocuments">Legal Documents</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-section">
+            <h3>Company</h3>
+            <ul>
+                <li><a href="#Careers">Careers</a></li>
+                <li><a href="#OurTeam">Our Team</a></li>
+                <li><a href="#Partners">Partners</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2024 My Website. All rights reserved.</p>
+    </div>
+    <div class="social-icons">
+        <a href="https://facebook.com" target="_blank" class="facebook-icon"></a>
+        <a href="https://twitter.com" target="_blank" class="twitter-icon"></a>
+        <a href="https://instagram.com" target="_blank" class="instagram-icon"></a>
+    </div>
+
+</footer>
+
+
+</body>
+</html>
